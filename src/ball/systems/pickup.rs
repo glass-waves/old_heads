@@ -1,14 +1,15 @@
 use avian3d::prelude::*;
 use bevy::prelude::*;
 
-use crate::ball::{BallSettings, BallState, Basketball, HeldBy};
+use crate::ball::{BallState, Basketball, HeldBy};
+use crate::physics_config::PhysicsConfig;
 use crate::player::{CameraMount, Player};
 
-/// System to pick up the ball when E is pressed and ball is within range
+/// System to pick up the ball when F is pressed and ball is within range
 pub fn ball_pickup(
     mut commands: Commands,
     keyboard: Res<ButtonInput<KeyCode>>,
-    settings: Res<BallSettings>,
+    config: Res<PhysicsConfig>,
     player_query: Query<(Entity, &GlobalTransform), With<Player>>,
     camera_query: Query<&GlobalTransform, With<CameraMount>>,
     mut ball_query: Query<
@@ -16,8 +17,8 @@ pub fn ball_pickup(
         (With<Basketball>, Without<HeldBy>),
     >,
 ) {
-    // Only process on E key press
-    if !keyboard.just_pressed(KeyCode::KeyE) {
+    // Only process on F key press (moved from E since Q/E are now dribble keys)
+    if !keyboard.just_pressed(KeyCode::KeyF) {
         return;
     }
 
@@ -43,7 +44,7 @@ pub fn ball_pickup(
         let ball_pos = ball_transform.translation();
         let distance = player_pos.distance(ball_pos);
 
-        if distance <= settings.pickup_range {
+        if distance <= config.pickup_range {
             if closest_ball.is_none() || distance < closest_ball.unwrap().1 {
                 closest_ball = Some((ball_entity, distance));
             }

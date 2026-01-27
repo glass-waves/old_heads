@@ -1,6 +1,7 @@
 use avian3d::prelude::*;
 use bevy::prelude::*;
 
+use crate::ball::{BallState, Basketball, HeldBy};
 use crate::player::{MovementInput, Player, PlayerConfig, PlayerYaw};
 
 /// Gathers WASD input and stores it in MovementInput component
@@ -31,16 +32,26 @@ pub fn gather_movement_input(
     movement_input.direction = direction.normalize_or_zero();
 }
 
-/// Applies movement input as velocity, taking into account player's yaw rotation
+/// Applies movement input as velocity, taking into account player's yaw rotation.
+/// Movement is blocked when holding a ball (not dribbling).
 pub fn apply_movement(
-    mut query: Query<(&MovementInput, &PlayerConfig, &PlayerYaw, &mut LinearVelocity), With<Player>>,
+    mut player_query: Query<
+        (Entity, &MovementInput, &PlayerConfig, &PlayerYaw, &mut LinearVelocity),
+        With<Player>,
+    >,
+    ball_query: Query<(&HeldBy, &BallState), With<Basketball>>,
 ) {
-    let Ok((input, config, yaw, mut velocity)) = query.single_mut() else {
+    let Ok((player_entity, input, config, yaw, mut velocity)) = player_query.single_mut() else {
         return;
     };
 
-    if input.direction == Vec2::ZERO {
-        // Stop horizontal movement when no input
+    // Check if player is holding a ball in Held state (not Dribbling)
+    let is_planted = ball_query.iter().any(|(held_by, ball_state)| {
+        held_by.0 == player_entity && *ball_state == BallState::Held
+    });
+
+    if input.direction == Vec2::ZERO || is_planted {
+        // Stop horizontal movement when no input OR when planted with ball
         velocity.x = 0.0;
         velocity.z = 0.0;
         return;
@@ -54,7 +65,8 @@ pub fn apply_movement(
     let right = yaw_rotation * Vec3::X;
 
     // Combine forward/back and left/right movement
-    let move_direction = (forward * input.direction.y + right * input.direction.x).normalize_or_zero();
+    let move_direction =
+        (forward * input.direction.y + right * input.direction.x).normalize_or_zero();
 
     // Apply velocity
     let move_velocity = move_direction * config.walk_speed;
