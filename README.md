@@ -1,56 +1,43 @@
-# Old Heads
+# old heads
 
-A physics-based basketball game where shooting and passing are genuinely difficult. All players are older men & women—no dunking, no fast running, just good old-fashioned playmaking.
+a silly game about playing basketball when you are old.
 
-Built with Bevy 0.18 + Avian3D physics.
+built with bevy 0.18 + avian3d physics.
 
-## Controls
+## controls
 
-| Input | Action |
+| input | action |
 |-------|--------|
-| WASD | Move player |
-| Mouse | Look around (click to grab cursor) |
-| Escape | Release cursor |
-| F | Pick up ball |
-| Q | Dribble with left hand |
-| E | Dribble with right hand |
-| Left Mouse (hold) | Charge shot |
-| Left Mouse (release) | Shoot ball |
-| Shift + Left Mouse | Pass |
-| T | Debug: Teleport ball to player |
+| wasd | move player |
+| mouse | look around (click to grab cursor) |
+| escape | release cursor |
+| f | pick up ball |
+| q | dribble with left hand |
+| e | dribble with right hand |
+| left mouse (hold) | charge shot |
+| left mouse (release) | shoot ball |
+| shift + left mouse | pass |
+| t | debug: teleport ball to player |
 
-**Pass types** are determined by camera angle:
-- Looking down → Bounce pass
-- Looking level → Chest pass
-- Looking up → Lob pass
+**pass types** are determined by camera angle:
+- looking down → bounce pass
+- looking level → chest pass
+- looking up → lob pass
 
-## Current State
 
-Working:
-- First-person player with FPS hands model
-- Ball pickup, holding, and manual dribbling (Q/E)
-- Shot charging with power indicator
-- Throwing/shooting with FPS-style aiming (no aim assist)
-- Passing system (shift+click, angle-based)
-- Basketball hoops with score detection
-- Street court environment
-
-Not yet implemented:
-- Hand animations connected to ball state
-- Score UI
-- Player body model
-- AI opponents
-- Sound effects
-
-## Running
-
-```bash
-cargo run
-```
-
-## Project Structure
-
-- `src/player/` - First-person controller, camera, movement
-- `src/ball/` - Ball states, dribbling, charging, throwing
-- `src/scoring/` - Hoop sensors, score detection
-- `src/physics_config.rs` - Tunable physics parameters
+## todos
+- fix rim colliders
+- add net animation for score
+- score ui
+- game logic for scoring
+- court zones for scoring
+- first person arm model with animation
+- sound effects
+- defensive off-ball moves (steal, block)
+- offensive off-ball moves (set screen, call for ball)
+- multiplayer networking
+- proximity chat with spatialized audio
+- game logic for scoring
+- timer
+- fun outfits
+- lots more
