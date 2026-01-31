@@ -213,4 +213,4 @@ src/
 
 **2026-01-26**: Fixed input state persistence bug where shot charge would persist when holding WASD + releasing mouse. Changed from `just_released()` to `!pressed()` for reliable mouse release detection. Reduced ball count from 50 to 5 for performance testing.
 
-**2026-01-26**: Changed pass controls from keyboard (Z/X/C then 1/2/3) to Shift+click with camera angle determining pass type. This avoids keyboard ghosting issues when holding Q+W for dribble+move. Looking down = bounce pass, level = chest pass, up = lob pass.
+**2026-01-26**: Changed pass controls from keyboard (Z/X/C then 1/2/3) to Shift+click with camera angle determining pass type. This avoids keyboard ghosting issues when holding Q+W for dribble+move. Looking down = bounce pass, level = chest pass, up = lob pass. Created GitHub repo `glass-waves/old_heads`.
